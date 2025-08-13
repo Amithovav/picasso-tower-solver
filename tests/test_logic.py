@@ -23,13 +23,13 @@ def test_example_3():
     """Tests the third original example."""
     assert count_assignments(HINTS_EX3) == 1728
 
-def test_absolute_hint():
-    """Tests a simple absolute hint."""
+def test_absolute_hint_floor_color():
+    """Tests a simple absolute hint with a floor and color."""
     hints = [AbsoluteHint(Floor.Third, Color.Red)]
     assert count_assignments(hints) == 2880
 
-def test_neighbor_hint():
-    """Tests a neighbor hint."""
+def test_neighbor_hint_colors():
+    """Tests a neighbor hint with two colors."""
     hints = [NeighborHint(Color.Red, Color.Green)]
     assert count_assignments(hints) == 5760
 
@@ -44,3 +44,18 @@ def test_contradictory_hints():
         AbsoluteHint(Animal.Frog, Floor.Second),
     ]
     assert count_assignments(hints) == 0
+
+def test_relative_hint_impossible_difference():
+    """Tests a relative hint with an impossible difference (should be 0)."""
+    hints = [RelativeHint(Color.Red, Color.Blue, 5)]
+    assert count_assignments(hints) == 0
+
+def test_neighbor_hint_impossible_distance():
+    """Tests a neighbor hint between non-neighboring floors (should be 0)."""
+    hints = [NeighborHint(Floor.First, Floor.Fifth)]
+    assert count_assignments(hints) == 0
+    
+def test_absolute_hint_color_animal_dedicated():
+    """Dedicated unit test for an absolute hint with a color and an animal."""
+    hints = [AbsoluteHint(Color.Blue, Animal.Chicken)]
+    assert count_assignments(hints) == 2880

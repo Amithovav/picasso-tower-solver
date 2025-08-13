@@ -1,13 +1,11 @@
 from enum import Enum, IntEnum
-from typing import List, Dict, Tuple, Any, Union
+from typing import Dict, Tuple, Any, Union, Optional
 
 # --- Type Aliases for Readability ---
-# Note: Using strings for forward references to avoid circular import issues if ever needed.
 AssignmentType = Dict["Floor", Tuple["Color", "Animal"]]
 AttributeType = Union["Floor", "Color", "Animal"]
 
 # --- Base Definitions and Enums ---
-
 class Floor(IntEnum):
     First = 1
     Second = 2
@@ -38,6 +36,7 @@ class Hint:
         raise NotImplementedError("Each hint subclass must implement this method.")
 
 class AbsoluteHint(Hint):
+  
     """Represents a hint where two attributes must be on the same floor."""
     def __init__(self, attr1: AttributeType, attr2: AttributeType):
         self._attr1 = attr1
@@ -50,6 +49,7 @@ class AbsoluteHint(Hint):
         return floor1 is not None and floor1 == floor2
 
 class RelativeHint(Hint):
+   
     """Represents a hint about the exact floor difference between two attributes."""
     def __init__(self, attr1: AttributeType, attr2: AttributeType, difference: int):
         self._attr1 = attr1
@@ -63,8 +63,9 @@ class RelativeHint(Hint):
         if floor1 is not None and floor2 is not None:
             return (floor1 - floor2) == self._difference
         return False
-
+    
 class NeighborHint(Hint):
+    
     """Represents a hint where two attributes are on adjacent floors."""
     def __init__(self, attr1: AttributeType, attr2: AttributeType):
         self._attr1 = attr1
@@ -77,7 +78,7 @@ class NeighborHint(Hint):
         if floor1 is not None and floor2 is not None:
             return abs(floor1 - floor2) == 1
         return False
-
+    
 # --- Test Case Data ---
 
 HINTS_EX1 = [

@@ -1,15 +1,22 @@
-from itertools import permutations
-from typing import List, Union, Any
+"""
+Solves the Picasso Tower logic puzzle.
 
-# הנקודה .models אומרת לפייתון לייבא מהקובץ models.py שנמצא באותה תיקייה (src)
+This module provides the core logic for solving the puzzle by iterating through
+all possible assignments and validating them against a given set of constraints (hints).
+
+The main public API is the `count_assignments` function.
+"""
+from itertools import permutations
+from typing import List, Iterable, Optional
+
 from .models import Floor, Color, Animal, Hint, AssignmentType, AttributeType
 
-def count_assignments(hints: List[Hint]) -> int:
+def count_assignments(hints: Iterable[Hint]) -> int:
     """
     Given a list of Hint objects, returns the number of
     valid assignments that satisfy all hints.
     """
-    def _find_floor(attr: AttributeType, assignment: AssignmentType) -> Union[Floor, None]:
+    def _find_floor(attr: AttributeType, assignment: AssignmentType) -> Optional[Floor]:
         """Finds the floor number of a given attribute in an assignment."""
         if isinstance(attr, Floor):
             return attr
@@ -20,11 +27,9 @@ def count_assignments(hints: List[Hint]) -> int:
 
     valid_count = 0
     floors = list(Floor)
-    all_color_perms = list(permutations(Color))
-    all_animal_perms = list(permutations(Animal))
-
+    all_color_perms = permutations(Color)
     for color_perm in all_color_perms:
-        for animal_perm in all_animal_perms:
+        for animal_perm in permutations(Animal):
             assignment: AssignmentType = {
                 floor: (color_perm[i], animal_perm[i])
                 for i, floor in enumerate(floors)
