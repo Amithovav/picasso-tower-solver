@@ -43,7 +43,7 @@ def count_assignments(hints: Iterable[Hint]) -> int:
                 # If not a Floor or Color, it must be an Animal
                 return animal_to_floor.get(attr)
 
-            # Pass the new, fast function to the hint evaluation logic
+            # Pass the function to the hint evaluation logic
             if all(h.evaluate_hint(assignment, find_floor) for h in hints):
                 valid_count += 1
 
