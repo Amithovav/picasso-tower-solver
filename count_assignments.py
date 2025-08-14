@@ -15,13 +15,25 @@ FindFloorFuncType = Callable[[AttributeType], "Floor"]
 
 # --- Base Definitions and Enums ---
 class Floor(IntEnum):
-    First = 1; Second = 2; Third = 3; Fourth = 4; Fifth = 5
+    First = 1
+    Second = 2
+    Third = 3
+    Fourth = 4
+    Fifth = 5
 
 class Color(Enum):
-    Red = "Red"; Green = "Green"; Blue = "Blue"; Yellow = "Yellow"; Orange = "Orange"
+    Red = "Red"
+    Green = "Green"
+    Blue = "Blue"
+    Yellow = "Yellow"
+    Orange = "Orange"
 
 class Animal(Enum):
-    Frog = "Frog"; Rabbit = "Rabbit"; Grasshopper = "Grasshopper"; Bird = "Bird"; Chicken = "Chicken"
+    Frog = "Frog"
+    Rabbit = "Rabbit"
+    Grasshopper = "Grasshopper"
+    Bird = "Bird"
+    Chicken = "Chicken"
 
 # --- Hint Classes ---
 class Hint:
