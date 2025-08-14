@@ -6,12 +6,12 @@ logic for the puzzle. The main public API is the `count_assignments` function.
 """
 from enum import Enum, IntEnum
 from itertools import permutations
-from typing import Dict, Tuple, Union, Callable, Iterable, Optional
+from typing import Dict, Tuple, Union, Callable, List
 
 # --- Type Aliases for Readability ---
 AssignmentType = Dict["Floor", Tuple["Color", "Animal"]]
 AttributeType = Union["Floor", "Color", "Animal"]
-FindFloorFuncType = Callable[[AttributeType], Optional["Floor"]]
+FindFloorFuncType = Callable[[AttributeType], "Floor"]
 
 # --- Base Definitions and Enums ---
 class Floor(IntEnum):
@@ -38,7 +38,7 @@ class AbsoluteHint(Hint):
     def evaluate_hint(self, assignment: AssignmentType, find_floor_func: FindFloorFuncType) -> bool:
         floor1 = find_floor_func(self._attr1)
         floor2 = find_floor_func(self._attr2)
-        return floor1 is not None and floor1 == floor2
+        return floor1 == floor2
 
 class RelativeHint(Hint):
     """Represents a hint about the exact floor difference between two attributes."""
@@ -50,9 +50,8 @@ class RelativeHint(Hint):
     def evaluate_hint(self, assignment: AssignmentType, find_floor_func: FindFloorFuncType) -> bool:
         floor1 = find_floor_func(self._attr1)
         floor2 = find_floor_func(self._attr2)
-        if floor1 is not None and floor2 is not None:
-            return (floor1 - floor2) == self._difference
-        return False
+        return (floor1 - floor2) == self._difference
+        
 
 class NeighborHint(Hint):
     """Represents a hint where two attributes are on adjacent floors."""
@@ -63,12 +62,11 @@ class NeighborHint(Hint):
     def evaluate_hint(self, assignment: AssignmentType, find_floor_func: FindFloorFuncType) -> bool:
         floor1 = find_floor_func(self._attr1)
         floor2 = find_floor_func(self._attr2)
-        if floor1 is not None and floor2 is not None:
-            return abs(floor1 - floor2) == 1
-        return False
+        return abs(floor1 - floor2) == 1
+        
 
 # --- Main Solver Function ---
-def count_assignments(hints: Iterable[Hint]) -> int:
+def count_assignments(hints: List[Hint]) -> int:
     """
     Given a list of Hint objects, returns the number of
     valid assignments that satisfy all hints.
@@ -87,7 +85,7 @@ def count_assignments(hints: Iterable[Hint]) -> int:
             color_to_floor = {color: floor for floor, (color, _) in assignment.items()}
             animal_to_floor = {animal: floor for floor, (_, animal) in assignment.items()}
 
-            def find_floor(attr: AttributeType) -> Optional[Floor]:
+            def find_floor(attr: AttributeType) -> Floor:
                 if isinstance(attr, Floor):
                     return attr
                 if isinstance(attr, Color):
